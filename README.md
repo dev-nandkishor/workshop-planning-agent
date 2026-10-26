@@ -2,9 +2,9 @@
 
 **Hacktoberfest Hack Day - NIAT-ADYPU · NIAT × Hacktoberfest 2026**
 
-**Author:** Suraj Balasaheb Khanase
+**Author:** Nandkishor Rahul Tamkhade
 
-**Repository:** <https://github.com/cyber-suraj/workshop-planning-agent>
+**Repository:** <https://github.com/dev-nandkishor/workshop-planning-agent>
 
 A bounded, local AI agent for workshop budgeting and equipment checks. The
 language model only chooses actions; Python controls tool availability,
@@ -149,7 +149,7 @@ Requires Python 3.10+ and a local
 Clone the public repository:
 
 ```powershell
-git clone https://github.com/cyber-suraj/workshop-planning-agent.git
+git clone https://github.com/dev-nandkishor/workshop-planning-agent.git
 cd workshop-planning-agent
 ```
 
@@ -347,7 +347,7 @@ The project is built on open-source technologies and is released under the
 
 ## License
 
-Copyright (c) 2026 Suraj Balasaheb Khanase. Distributed under the
+Copyright (c) 2026 Nandkishor Rahul Tamkhade. Distributed under the
 [MIT License](LICENSE).
 
 ## Event compliance

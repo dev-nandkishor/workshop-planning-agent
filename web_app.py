@@ -25,7 +25,7 @@ from app import MAX_STEPS, MODEL_NAME, OLLAMA_API_KEY, OLLAMA_HOST, run_agent
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
-REPO_URL = "https://github.com/cyber-suraj/workshop-planning-agent"
+REPO_URL = "https://github.com/dev-nandkishor/workshop-planning-agent"
 MAX_QUERY_CHARS = 2_000
 MAX_REQUEST_BYTES = 16 * 1024
 KEEPALIVE_SECONDS = 12

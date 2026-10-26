@@ -73,7 +73,7 @@ Key features:
 ## Source-code repository
 
 **Public repository URL:**
-<https://github.com/cyber-suraj/workshop-planning-agent>
+<https://github.com/dev-nandkishor/workshop-planning-agent>
 
 Repository description: "Bounded local LLM agent for deterministic workshop
 budgeting and equipment checks."
@@ -165,7 +165,7 @@ HTML/CSS/JavaScript with no build step. Regression tests use Python's built-in
 
 ## Team and contributions
 
-**Team name:** Solo — Suraj Balasaheb Khanase
+**Team name:** Solo — Nandkishor Rahul Tamkhade
 
 **Team size:** 1 participant (solo submission)
 
@@ -173,7 +173,7 @@ HTML/CSS/JavaScript with no build step. Regression tests use Python's built-in
 
 | Member | Responsibilities / contribution |
 | --- | --- |
-| Suraj Balasaheb Khanase | Project concept and requirements, environment setup, live-run verification, and submission preparation. The implementation and documentation were produced with disclosed AI assistance. |
+| Nandkishor Rahul Tamkhade | Project concept and requirements, environment setup, live-run verification, and submission preparation. The implementation and documentation were produced with disclosed AI assistance. |
 
 ## Originality and pre-existing work
 
@@ -211,9 +211,9 @@ Before submission, the participant must:
 ## Open-source and licensing
 
 **Public repository:**
-<https://github.com/cyber-suraj/workshop-planning-agent>
+<https://github.com/dev-nandkishor/workshop-planning-agent>
 
-**License:** MIT License. Copyright (c) 2026 Suraj Balasaheb Khanase. See
+**License:** MIT License. Copyright (c) 2026 Nandkishor Rahul Tamkhade. See
 [LICENSE](LICENSE).
 
 The license is a permissive open-source license that allows reuse,
@@ -223,7 +223,7 @@ this choice for the solo submission.
 Open-source readiness:
 
 - [x] Repository is public and accessible without credentials:
-  <https://github.com/cyber-suraj/workshop-planning-agent>.
+  <https://github.com/dev-nandkishor/workshop-planning-agent>.
 - [x] A `LICENSE` file is present and matches this document.
 - [x] Setup and test instructions work from a clean environment.
 - [x] Contribution and conduct expectations are documented in

@@ -200,7 +200,7 @@ project name and links.
 - Workshop Planning Agent
 - Live demo: https://workshop-planning-agent-main.vercel.app
 - Code: https://github.com/dev-nandkishor/workshop-planning-agent
-- Original project by Suraj Balasaheb Khanase · MIT License
+- Author: Nandkishor Rahul Tamkhade · MIT License
 
 ---
 
@@ -302,7 +302,7 @@ Use this if the submission form has a one-minute limit.
 
 ## Attribution
 
-The repository and its `SUBMISSION.md` identify **Suraj Balasaheb Khanase** as
+The repository and its `SUBMISSION.md` identify **Nandkishor Rahul Tamkhade** as
 the original solo participant and author. Keep that attribution in the video,
 repository, and submission form unless the event organizer confirms a different
 arrangement.
