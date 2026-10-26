@@ -1,0 +1,16 @@
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.vercel/
+.local/
+.git/
+tests/
+docs/
+demo_tools.py
+DEMO.md
+SUBMISSION.md
+README.md
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+LICENSE

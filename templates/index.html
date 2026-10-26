@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A bounded local AI agent that verifies workshop budgets and equipment availability with deterministic Python tools.">
+  <meta name="theme-color" content="#07110e">
+  <title>Workshop Agent — Every rupee. Every resource. Verified.</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body data-model="{{ model }}">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="/" aria-label="Workshop Agent home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2.75 13.9 9.1a3.2 3.2 0 0 0 2.1 2.1l6.25 1.9-6.25 1.9a3.2 3.2 0 0 0-2.1 2.1L12 23.25 10.1 17.1a3.2 3.2 0 0 0-2.1-2.1L1.75 13l6.25-1.9a3.2 3.2 0 0 0 2.1-2.1L12 2.75Z" fill="currentColor"/>
+            <circle cx="19" cy="5" r="1.6" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-name">Workshop Agent</span>
+          <span class="brand-tag">Deterministic planning</span>
+        </span>
+      </a>
+
+      <div class="event-strip" aria-label="Event context">
+        <span class="event-pulse" aria-hidden="true"></span>
+        <span>Hacktoberfest Hack Day</span>
+        <span class="event-divider" aria-hidden="true">/</span>
+        <span>NIAT–ADYPU</span>
+      </div>
+
+      <div class="top-actions">
+        <span class="status-pill is-checking" id="ollamaPill" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="ollamaText">Checking Ollama</span>
+        </span>
+        <a class="github-link" href="{{ repo_url }}" target="_blank" rel="noreferrer">
+          GitHub
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="page">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-rule" aria-hidden="true"></span>AI-assisted · Python-verified</p>
+        <h1 id="hero-title">Every rupee.<br>Every resource.<br><em>Verified.</em></h1>
+        <p class="lede">
+          Describe your workshop once. A local Llama model routes the request,
+          while deterministic Python tools do the math and check the inventory.
+        </p>
+
+        <div class="proof-list">
+          <div class="proof">
+            <span class="proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 3 4.75 6v5.4c0 4.3 2.9 7.9 7.25 9.1 4.35-1.2 7.25-4.8 7.25-9.1V6L12 3Z" stroke="currentColor" stroke-width="1.5"/>
+                <path d="m9 12 2.1 2.1L15.5 9.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span><strong>Three gates</strong><small>Allowlist, signature, safe execution</small></span>
+          </div>
+          <div class="proof">
+            <span class="proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="5" y="10" width="14" height="10" rx="2.5" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8.5 10V7.5a3.5 3.5 0 1 1 7 0V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M12 14v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span><strong>Local only</strong><small>No cloud keys, no egress</small></span>
+          </div>
+          <div class="proof">
+            <span class="proof-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v16M17 7.5c-.8-1.2-2.4-2-4-2-2.5 0-4 1.2-4 3s1.3 2.7 4 3.3c2.7.6 4 1.5 4 3.4 0 1.9-1.7 3.1-4.2 3.1-1.8 0-3.5-.7-4.5-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span><strong>Exact INR</strong><small>Integer-guarded arithmetic</small></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer-wrap">
+        <form class="composer panel" id="planForm" novalidate>
+          <div class="composer-head">
+            <div>
+              <p class="kicker">Workshop brief</p>
+              <h2>What are you planning?</h2>
+            </div>
+            <button class="text-button" id="sampleButton" type="button">Use sample</button>
+          </div>
+
+          <label class="sr-only" for="query">Describe your workshop</label>
+          <div class="textarea-shell">
+            <textarea id="query" name="query" rows="6" maxlength="{{ max_query_chars }}" spellcheck="false" required>Plan a two-day workshop for 30 students within a 15000 INR budget. Daily cost per person is 200 INR. Check projector, Wi-Fi, whiteboard, laptops, and microphones.</textarea>
+            <div class="textarea-meta">
+              <span id="charCount"></span>
+              <span>One brief · two verified tools</span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="primary-button" id="runButton" type="submit">
+              <span class="button-spinner" aria-hidden="true"></span>
+              <span class="button-label">Run planning agent</span>
+              <svg class="button-arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <p class="form-note">Local inference can take 1–2 minutes on the first run.</p>
+          </div>
+          <p class="form-error" id="formError" role="alert" hidden></p>
+
+          <div class="flow-rail" aria-label="Fixed agent workflow">
+            <div class="flow-step">
+              <span class="flow-index">01</span>
+              <span><strong>Budget</strong><small>calculate_budget</small></span>
+            </div>
+            <span class="flow-line" aria-hidden="true"></span>
+            <div class="flow-step">
+              <span class="flow-index">02</span>
+              <span><strong>Resources</strong><small>check_resources</small></span>
+            </div>
+            <span class="flow-line" aria-hidden="true"></span>
+            <div class="flow-step">
+              <span class="flow-index">03</span>
+              <span><strong>Brief</strong><small>grounded summary</small></span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="workspace panel" aria-labelledby="workspace-title">
+      <header class="workspace-head">
+        <div>
+          <p class="kicker">Run console</p>
+          <h2 id="workspace-title">Plan verification</h2>
+        </div>
+        <div class="workspace-meta">
+          <span class="run-badge is-idle" id="runBadge">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="runBadgeText">Ready</span>
+          </span>
+          <span class="elapsed" id="elapsed" aria-label="Elapsed time">00:00</span>
+        </div>
+      </header>
+
+      <div class="empty-state" id="emptyState">
+        <div class="workflow-map" aria-hidden="true">
+          <div class="map-topline">
+            <span>Fixed workflow</span>
+            <span class="mono">local</span>
+          </div>
+          <div class="map-card">
+            <span class="map-number">01</span>
+            <span class="map-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 4v16M17 7.5c-.8-1.2-2.4-2-4-2-2.5 0-4 1.2-4 3s1.3 2.7 4 3.3c2.7.6 4 1.5 4 3.4 0 1.9-1.7 3.1-4.2 3.1-1.8 0-3.5-.7-4.5-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span><strong>Budget engine</strong><small>Exact INR arithmetic</small></span>
+            <span class="map-status">armed</span>
+          </div>
+          <span class="map-connector"></span>
+          <div class="map-card">
+            <span class="map-number">02</span>
+            <span class="map-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5v-7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="m4.5 8.8 7.5 4.3 7.5-4.3M12 13.1V20" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span><strong>Inventory check</strong><small>Alias-normalized lookup</small></span>
+            <span class="map-status">armed</span>
+          </div>
+          <span class="map-connector"></span>
+          <div class="map-card">
+            <span class="map-number">03</span>
+            <span class="map-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M6 4.5h9l3 3v12H6v-15Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M9 10h6M9 13h6M9 16h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span><strong>Grounded brief</strong><small>Model summary only</small></span>
+            <span class="map-status">gated</span>
+          </div>
+          <div class="map-foot">
+            <span class="map-lock" aria-hidden="true">
+              <svg viewBox="0 0 16 16" fill="none">
+                <rect x="3.25" y="7" width="9.5" height="6.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 7V5.5a2.5 2.5 0 0 1 5 0V7" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+            </span>
+            <span>Gate 1 allowlist · Gate 2 signature · Gate 3 guarded execution</span>
+          </div>
+        </div>
+
+        <div class="empty-copy">
+          <p class="kicker">Nothing running</p>
+          <h3>Send a brief. Get a verified plan.</h3>
+          <p>
+            The agent will expose one tool at a time, validate every argument,
+            execute exact Python logic, and only then ask the model to summarize.
+          </p>
+          <ul class="empty-list">
+            <li><span class="list-mark"></span>Live tool trace, not a hidden prompt</li>
+            <li><span class="list-mark"></span>Budget and inventory facts from Python</li>
+            <li><span class="list-mark"></span>Hard stop on tool or workflow errors</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="live-state" id="liveState" hidden>
+        <div class="run-layout">
+          <section class="activity-panel" aria-labelledby="activity-title">
+            <div class="panel-heading">
+              <div>
+                <p class="kicker">Agent activity</p>
+                <h3 id="activity-title">Live execution</h3>
+              </div>
+              <span class="activity-model mono" id="activityModel">{{ model }}</span>
+            </div>
+
+            <div class="thinking-bar" id="thinkingBar" role="status" aria-live="polite">
+              <span class="thinking-orb" aria-hidden="true"></span>
+              <span class="thinking-copy">
+                <strong id="thinkingTitle">Starting session</strong>
+                <small id="thinkingDetail">Contacting the local model…</small>
+              </span>
+              <span class="thinking-time mono" id="thinkingElapsed">00:00</span>
+            </div>
+
+            <ol class="timeline" id="timeline" aria-live="polite"></ol>
+
+            <div class="guardrail-footer">
+              <span><span class="guardrail-dot" aria-hidden="true"></span>Guardrails active</span>
+              <span class="mono">temperature 0 · max 5 steps</span>
+            </div>
+          </section>
+
+          <section class="results-panel" aria-label="Verified results">
+            <article class="result-card budget-card" id="budgetCard">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">Budget engine</p>
+                  <h3>INR position</h3>
+                </div>
+                <span class="result-status is-pending" id="budgetStatus">Awaiting</span>
+              </div>
+
+              <div class="budget-main">
+                <div class="gauge" id="gauge" role="img" aria-label="Budget usage awaiting calculation">
+                  <svg viewBox="0 0 120 120" aria-hidden="true">
+                    <circle class="gauge-track" cx="60" cy="60" r="50"></circle>
+                    <circle class="gauge-value" id="gaugeValue" cx="60" cy="60" r="50"></circle>
+                  </svg>
+                  <div class="gauge-center">
+                    <strong id="usagePct">—</strong>
+                    <span>of budget</span>
+                  </div>
+                </div>
+
+                <div class="budget-values">
+                  <div class="metric">
+                    <span>Estimated cost</span>
+                    <strong id="costValue">—</strong>
+                  </div>
+                  <div class="metric">
+                    <span>Allocated</span>
+                    <strong id="budgetValue">—</strong>
+                  </div>
+                  <div class="metric metric-highlight">
+                    <span>Remaining</span>
+                    <strong id="remainingValue">—</strong>
+                  </div>
+                </div>
+              </div>
+              <p class="result-note" id="budgetNote">Waiting for the budget tool.</p>
+            </article>
+
+            <article class="result-card resource-card" id="resourceCard">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">Inventory engine</p>
+                  <h3>Equipment availability</h3>
+                </div>
+                <span class="result-status is-pending" id="resourceStatus">Awaiting</span>
+              </div>
+              <div class="resource-list is-pending" id="resourceList">
+                <span class="resource-placeholder"><span class="placeholder-dot" aria-hidden="true"></span>Waiting for inventory check</span>
+              </div>
+              <p class="result-note" id="resourceNote">No inventory claims until the tool returns.</p>
+            </article>
+
+            <article class="result-card summary-card" id="summaryCard">
+              <div class="panel-heading">
+                <div>
+                  <p class="kicker">Final answer</p>
+                  <h3 id="summaryTitle">Grounded summary</h3>
+                </div>
+                <span class="result-status is-pending" id="summaryStatus">Pending</span>
+              </div>
+              <div class="summary-placeholder" id="summaryPlaceholder">
+                <span class="skeleton-line"></span>
+                <span class="skeleton-line"></span>
+                <span class="skeleton-line is-short"></span>
+                <span class="summary-hint">Appears after both tools finish.</span>
+              </div>
+              <p class="summary-text" id="summaryText" hidden></p>
+              <div class="summary-footer" id="summaryFooter" hidden>
+                <span>Every fact here is grounded in the tool results.</span>
+                <button class="copy-button" id="copyButton" type="button">Copy summary</button>
+              </div>
+            </article>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Workshop Agent · MIT License</span>
+    <span>Built with Llama 3.1 via Ollama · Python guardrails by Suraj Balasaheb Khanase</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>
+    <div class="noscript">This interface needs JavaScript enabled to stream live agent events.</div>
+  </noscript>
+
+  <template id="toolItemTemplate">
+    <li class="timeline-item is-running">
+      <span class="timeline-marker" aria-hidden="true"></span>
+      <div class="timeline-body">
+        <div class="timeline-title-row">
+          <strong data-role="title"></strong>
+          <span class="mini-pill is-running" data-role="status">Running</span>
+        </div>
+        <p class="timeline-sub" data-role="subtitle"></p>
+        <div class="arg-list" data-role="args"></div>
+        <p class="timeline-result" data-role="result" hidden></p>
+        <details class="raw-details" data-role="details" hidden>
+          <summary>Raw tool result</summary>
+          <pre data-role="raw"></pre>
+        </details>
+      </div>
+    </li>
+  </template>
+
+  <template id="guardrailTemplate">
+    <li class="timeline-item is-warning">
+      <span class="timeline-marker" aria-hidden="true">!</span>
+      <div class="timeline-body">
+        <div class="timeline-title-row">
+          <strong>Guardrail triggered</strong>
+          <span class="mini-pill is-warning">Blocked</span>
+        </div>
+        <p class="timeline-sub" data-role="message"></p>
+      </div>
+    </li>
+  </template>
+
+  <template id="finalItemTemplate">
+    <li class="timeline-item is-complete">
+      <span class="timeline-marker" aria-hidden="true">
+        <svg viewBox="0 0 16 16" fill="none">
+          <path d="m4 8.3 2.5 2.4L12 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div class="timeline-body">
+        <div class="timeline-title-row">
+          <strong>Grounded summary</strong>
+          <span class="mini-pill is-complete">Returned</span>
+        </div>
+        <p class="timeline-sub">The model received the structured tool results and wrote the final answer.</p>
+      </div>
+    </li>
+  </template>
+
+  <template id="resourceChipTemplate">
+    <span class="resource-chip">
+      <span class="chip-icon" aria-hidden="true"></span>
+      <span data-role="label"></span>
+    </span>
+  </template>
+</body>
+</html>
